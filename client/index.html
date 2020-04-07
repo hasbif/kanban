@@ -4,21 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 
-<body>
-    <div id='example'></div>
+<body class="pagebody">
+    <nav class="navbar navbar-light" style="background-color: #48adf5;">
+        <span class=" navbar-brand mb-0 h1">KANBAN</span>
+    </nav>
+    <div id="content">
+        <div class="card">
+            <h5 class="card-header">Backlog</h5>
+            <div class="card-body">
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title2
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+            </div>
+            <a href="#" class="btn btn-primary">Add Task</a>
+        </div>
+
+        <div class="card">
+            <h5 class="card-header">Todo</h5>
+            <div class="card-body">
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title2
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title3
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+
+            </div>
+            <a href="#" class="btn btn-primary">Add Task</a>
+        </div>
+
+
+        <div class="card">
+            <h5 class="card-header">Done</h5>
+            <div class="card-body">
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+            </div>
+            <a href="#" class="btn btn-primary">Add Task</a>
+        </div>
+
+
+        <div class="card">
+            <h5 class="card-header">Completed</h5>
+            <div class="card-body">
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title2
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title3
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+                <div class='tasks'>
+                    <h6 class='tasktitle'>
+                        Title4
+                    </h6>
+                    <p class="taskuser">By: user123@gmail.com <br> DD MMMM YYYY, HH:MM</p>
+                </div>
+
+            </div>
+            <a href="#" class="btn btn-primary">Add Task</a>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
 
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script>
-    let url = "http://localhost:3000/"
+    let url = "https://gentle-bastion-66131.herokuapp.com/"
     $(document).ready(function () {
         $.ajax({
             type: 'GET',
-            url
+            url: `${url}test`
         }).done(data => {
             $('#example').html(data.msg)
 
