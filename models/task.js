@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Category cannot be empty"
         }
       }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: "UserId cannot be empty"
+        }
+      }
     }
   }, {});
   Task.associate = function (models) {
