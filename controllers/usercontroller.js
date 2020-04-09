@@ -37,11 +37,9 @@ class UserController {
                         const access_token = jwt.sign({ userId: user.id, }, process.env.SECRET);
                         res.status(200).json({ access_token });
                     } else {
-                        console.log('wrong password')
                         res.status(400).json({ msg });
                     }
                 } else {
-                    console.log('wrong account')
                     res.status(400).json({ msg });
                 }
             }).catch(err => {
