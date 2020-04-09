@@ -71,7 +71,7 @@
                         <div class="collapse" id="collapseExample">
                             <form>
                                 <div class="form-group">
-                                    <input v-model="editB" type="text" class="form-control" value="Test">
+                                    <input v-model="editB" type="text" class="form-control" placeholder="Test">
                                     <!-- place holder ngambil data gimana -->
                                     <!-- masing masing harus bikin vmodel sendiri???-->
                                 </div>
@@ -233,6 +233,7 @@
         crossorigin="anonymous"></script>
 
 
+
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
     <script>
@@ -249,13 +250,13 @@
                 addTodo: null,
                 addDone: null,
                 addCompleted: null,
-                tasks: {},
+                tasks: null,
                 filtered: null
             },
             created() {
                 if (localStorage.access_token) {
-                    this.getTask()
                     this.loginStatus = true
+                    this.getTask()
                 } else {
                     this.loginStatus = null
                 }
@@ -335,9 +336,8 @@
                         this.loginEmail = null
                         this.loginPassword = null
                     }).catch(err => {
-                        console.log('err this massage', err)
-                        console.log(err.response.data.msg)
-                        //this.message = err
+                        console.log(err.msg, err)
+                        this.message = err
                     })
 
                 },

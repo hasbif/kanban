@@ -4,7 +4,7 @@ class TaskCtrl {
 
     static list(req, res) {
         Task.findAll({
-            include: [{ model: User, where: { organization: 'Hacktiv8' } }], order: [['updatedAt', 'asc']]
+            include: [{ model: User, where: { organization: 'Hacktiv8' } }], order: [['id', 'asc']]
         }).then(task => {
             res.status(200).json({ task })
         }).catch(err => {
@@ -31,15 +31,15 @@ class TaskCtrl {
             })
     }
 
-    // static move(req, res) {
-    //     const { category } = req.body
-    //     Task.update({ category }, { where: { id: req.params.id } })
-    //         .then(task => {
-    //             res.status(200).json({ task })
-    //         }).catch(err => {
-    //             res.status(500).json({ msg: 'Internal Server Error', err })
-    //         })
-    // }
+    static move(req, res) {
+        const { category } = req.body
+        Task.update({ category }, { where: { id: req.params.id } })
+            .then(task => {
+                res.status(200).json({ task })
+            }).catch(err => {
+                res.status(500).json({ msg: 'Internal Server Error', err })
+            })
+    }
 
     static edit(req, res) {
 
@@ -54,33 +54,23 @@ class TaskCtrl {
         const { title, category } = req.body
 
         console.log(title, category)
-
-        Task.update({ title, category }, { where: { id: req.params.id } })
-            .then(task => {
-                res.status(200).json({ task: { id: req.taskId, title, category: req.taskCategory } })
-            }).catch(err => {
-                res.status(500).json({ msg: 'Internal Server Error', err })
-            })
-
-
-
-        // if (title) {
-        //     Task.update({ title }, { where: { id: req.params.id } })
-        //         .then(task => {
-        //             res.status(200).json({ task: { id: req.taskId, title, category: req.taskCategory } })
-        //         }).catch(err => {
-        //             res.status(500).json({ msg: 'Internal Server Error', err })
-        //         })
-        // } else if (category) {
-        //     Task.update({ category }, { where: { id: req.params.id } })
-        //         .then(task => {
-        //             res.status(200).json({ task: { id: req.taskId, title: req.taskTitle, category } })
-        //         }).catch(err => {
-        //             res.status(500).json({ msg: 'Internal Server Error', err })
-        //         })
-        // } else {
-        //     res.status(400).json({ msg: 'Update Error' })
-        // }
+        if (title) {
+            Task.update({ title }, { where: { id: req.params.id } })
+                .then(task => {
+                    res.status(200).json({ task: { id: req.taskId, title, category: req.taskCategory } })
+                }).catch(err => {
+                    res.status(500).json({ msg: 'Internal Server Error', err })
+                })
+        } else if (category) {
+            Task.update({ category }, { where: { id: req.params.id } })
+                .then(task => {
+                    res.status(200).json({ task: { id: req.taskId, title: req.taskTitle, category } })
+                }).catch(err => {
+                    res.status(500).json({ msg: 'Internal Server Error', err })
+                })
+        } else {
+            res.status(400).json({ msg: 'Update Error' })
+        }
     }
 
     static delete(req, res) {
