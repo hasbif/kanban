@@ -11,13 +11,14 @@
           v-model="loginPassword"
         ></b-input>
         <b-button class="mb-2 mr-sm-2 mb-sm-0" type="submit" variant="primary">Login</b-button>
+        <div id="google-signin-button" class="g-signin2"></div>
       </b-form>
-      <div
+      <!-- <div
         id="buttonloggedoutgoogle"
         class="g-signin2"
         data-onsuccess="onSignIn"
         @done="onSignIn()"
-      ></div>
+      ></div>-->
 
       <button v-if="loginStatus" v-on:click="logout" type="button" class="btn btn-primary">Logout</button>
     </nav>
@@ -78,11 +79,16 @@ export default {
   },
   created() {
     if (localStorage.access_token) {
-      this.getTask();
+      //this.getTask();
       this.loginStatus = true;
     } else {
       this.loginStatus = null;
     }
+  },
+  mounted() {
+    gapi.signin2.render("google-signin-button", {
+      onsuccess: this.onSignIn
+    });
   },
   methods: {
     register: function() {
@@ -173,9 +179,13 @@ export default {
         showConfirmButton: false,
         timer: 1500
       });
+
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function() {
+        console.log("User signed out.");
+      });
     },
     getTask: function() {
-      console.log("gettask");
       axios({
         url: "http://localhost:3000/task",
         method: "GET",
@@ -239,8 +249,38 @@ export default {
       this.getTask();
       Swal.fire("Deleted!", "Your file has been deleted.", "success");
     },
-    onSignIn: function() {
-      console.log("success");
+    onSignIn: function(googleUser) {
+      var id_token = googleUser.getAuthResponse().id_token;
+      console.log("user", googleUser);
+      console.log(id_token, "test");
+      axios({
+        method: "post",
+        url: `${url}google-sign-in`,
+        data: {
+          idtoken: id_token
+        }
+      })
+        .then(res => {
+          //console.log("success", res.data, res.access_token);
+          localStorage.setItem("access_token", res.data.access_token);
+          this.loginStatus = true;
+          this.loginEmail = null;
+          this.loginPassword = null;
+          this.getTask();
+          console.log("add");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Successfully Logged In",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .catch(err => {
+          console.log("error", err.response);
+        });
+
+      console.log("success di bawah");
     }
   }
 };

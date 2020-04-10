@@ -52,7 +52,7 @@ class UserController {
 
 
     static google(req, res) {
-        const token = req.body.token
+        const token = req.body.idtoken
         let user = {}
         client.verifyIdToken({
             idToken: token,
@@ -72,7 +72,7 @@ class UserController {
             let access_token = jwt.sign({ userId: login.id }, process.env.SECRET)
             res.status(200).json({ access_token })
         }).catch(err => {
-            res.status(500).text({ msg: 'Internal Server Error', err })
+            res.status(500).json({ msg: 'Internal Server Error', err })
         })
     }
 }
