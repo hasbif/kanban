@@ -72,7 +72,7 @@ import axios from "axios";
 import Card from "./components/Card";
 import GglBtn from "./components/Google";
 import Swal from "sweetalert2";
-const url = "http://localhost:3000/";
+const url = "https://gentle-bastion-66131.herokuapp.com/";
 
 export default {
   name: "App",
@@ -215,7 +215,7 @@ export default {
     },
     getTask: function() {
       axios({
-        url: "http://localhost:3000/task",
+        url: `${url}task`,
         method: "GET",
         headers: { access_token: localStorage.access_token }
       })

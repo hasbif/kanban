@@ -41,7 +41,7 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
-const url = "http://localhost:3000/";
+const url = "https://gentle-bastion-66131.herokuapp.com/";
 
 export default {
   name: "Cardlist",

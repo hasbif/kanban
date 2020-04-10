@@ -1,5 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+* {
+    border-radius: 0 !important;
+  }
+
+
 body{
-    background-color: black;
+    font-family: 'Roboto Mono', monospace, "Arial Narrow Bold", sans-serif !important;
+    background-color: rgb(31, 31, 31) !important;
+    min-width: 100vw;
+    min-height: 100vh;
 }
 
 
@@ -13,35 +22,93 @@ body{
     width: 90%;
 }
 
-.card{
-    background-color: rgb(27, 24, 24);
+.card-top{
+    background-color: whitesmoke;
     display: flex;
     flex-direction: column;
     align-content: center;
     width: 23%;
-}
+} 
 
-.addtask{
+.card-body{
     width: 100%;
 }
 
-.tasks{
-    background-color: whitesmoke;
-    color: brown;
+
+.center-xy-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 1fr auto 1fr;
+    grid-template-areas:
+        ". . ." 
+        ". center ." 
+        ". . .";
+}
+.center-xy-container .center {
+    grid-area: center;
 }
 
-.tasktitle{
-    padding: 10px 10px;
-    padding-top: 40px;
+.full{
+    width: 100%;
+    height: 90vh;
+}
+#regdiv{
+    border: 1px;
+    border-style: solid;
+    border-color: lightslategrey;
+
+    
+}
+#regbody{
+    margin: 30px;
+    border: 1px;
+    border-style: solid;
+    border-color: lightgray;
 }
 
-.taskuser{
-    font-size: 12px;
-    padding: 10px 10px;
-    /* padding-left: 15px; */
+#regform{
+    margin: 100px 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.card-header{
-    color: aliceblue;
+.category-head{
+    background-color: rgb(61, 61, 61) !important;
+    color: whitesmoke !important;
+}
+
+.task-card{
+    background-color: rgb(238, 204, 162) !important;
+    color: darkred !important;
+}
+
+.category-all{
+    background-color: rgb(238, 204, 162) !important;
+}
+
+.add-btn{
+    background-color: grey !important;
+}
+
+.inputTask{
+    background-color: rgb(238, 204, 162) !important;
+    color: black !important;
+    border-color: rgb(61, 61, 61) !important;
+}
+
+.dropdownAdd{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.insideAdd{
+    padding: 10px;
+    width: 90%;
+}
+
+.form-inline{
+    width: 100% !important;
 }
 
