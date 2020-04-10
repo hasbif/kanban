@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- {{task}} -->
-    <b-card :title="task.title">
+    <b-card :title="task.title" class="task-card">
       <b-card-text>
         {{task.User.email}}
         <br />
@@ -10,18 +10,27 @@
 
       <b-button
         v-b-toggle="`collapse${task.id}`"
-        variant="primary"
+        variant="warning"
         @click="populateData(task.title,task.category)"
       >Edit</b-button>
-      <b-button variant="primary" @click="deleteTask(task.id)">Delete</b-button>
+      <b-button variant="warning" @click="deleteTask(task.id)">Delete</b-button>
       <b-collapse :id="`collapse${task.id}`" class="mt-2">
         <b-form>
-          <b-input :id="`editInp${task.id}`" class="mb-2 mr-sm-2 mb-sm-0" v-model="editTitle"></b-input>
-          <b-form-select :id="`editCatInp${task.id}`" v-model="editCat" :options="categories"></b-form-select>
+          <b-input
+            :id="`editInp${task.id}`"
+            class="mb-2 mr-sm-2 mb-sm-2 inputTask"
+            v-model="editTitle"
+          ></b-input>
+          <b-form-select
+            :id="`editCatInp${task.id}`"
+            v-model="editCat"
+            :options="categories"
+            class="mb-2 mr-sm-2 mb-sm-2 inputTask"
+          ></b-form-select>
           <b-button
             v-on:click="editTask(task.id)"
             v-b-toggle="`collapse${task.id}`"
-            variant="primary"
+            variant="warning"
           >Edit</b-button>
         </b-form>
       </b-collapse>
@@ -44,21 +53,11 @@ export default {
       categories: ["Backlog", "Todo", "Done", "Completed"]
     };
   },
-  created() {
-    this.dateFormat();
-  },
   methods: {
-    dateFormat: function() {
-      let date = new Date(this.task.updatedAt);
-      date = date.toLocaleString("en-GB");
-      this.task.updatedAt = date;
-    },
     editTask: function(id) {
       let title = this.editTitle;
       let category = this.editCat;
       category = category.charAt(0).toLowerCase() + category.slice(1);
-
-      console.log(id, title, category);
       axios({
         url: `${url}task/${id}`,
         method: "PUT",
@@ -66,7 +65,6 @@ export default {
         headers: { access_token: localStorage.access_token }
       })
         .then(res => {
-          console.log("suc", res);
           this.$emit("taskedited");
         })
         .catch(err => {
@@ -93,14 +91,12 @@ export default {
         confirmButtonText: "Yes, delete it!"
       }).then(result => {
         if (result.value) {
-          console.log(id, "deleted");
           axios({
             url: `${url}task/${id}`,
             method: "DELETE",
             headers: { access_token: localStorage.access_token }
           })
             .then(res => {
-              console.log("suc", res);
               this.$emit("taskdeleted");
             })
             .catch(err => {
@@ -111,8 +107,6 @@ export default {
                 text: err.response.data.msg
               });
             });
-        } else {
-          console.log(id, "nahhbarh");
         }
       });
     }

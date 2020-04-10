@@ -1,5 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+* {
+    border-radius: 0 !important;
+  }
+
+
 body{
-    background-color: black;
+    font-family: 'Roboto Mono', monospace, "Arial Narrow Bold", sans-serif !important;
+    background-color: rgb(31, 31, 31) !important;
     min-width: 100vw;
     min-height: 100vh;
 }
@@ -53,40 +60,55 @@ body{
     
 }
 #regbody{
-    margin: 10px;
+    margin: 30px;
     border: 1px;
     border-style: solid;
     border-color: lightgray;
 }
 
 #regform{
-    margin: 10px 30px;
+    margin: 100px 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* .addtask{
-    width: 100%;
+.category-head{
+    background-color: rgb(61, 61, 61) !important;
+    color: whitesmoke !important;
 }
 
-.tasks{
-    background-color: whitesmoke;
-    color: brown;
+.task-card{
+    background-color: rgb(238, 204, 162) !important;
+    color: darkred !important;
 }
 
-.tasktitle{
-    padding: 10px 10px;
-    padding-top: 40px;
+.category-all{
+    background-color: rgb(238, 204, 162) !important;
 }
 
-.taskuser{
-    font-size: 12px;
-    padding: 10px 10px;
-    padding-left: 15px;
+.add-btn{
+    background-color: grey !important;
 }
 
-.card-header{
-    color: aliceblue;
-}  */
+.inputTask{
+    background-color: rgb(238, 204, 162) !important;
+    color: black !important;
+    border-color: rgb(61, 61, 61) !important;
+}
+
+.dropdownAdd{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.insideAdd{
+    padding: 10px;
+    width: 90%;
+}
+
+.form-inline{
+    width: 100% !important;
+}
 

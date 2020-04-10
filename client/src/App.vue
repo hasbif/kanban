@@ -1,27 +1,37 @@
 <template>
   <div class="full">
-    <nav class="navbar navbar-light" style="background-color: #48adf5;">
-      <span class="navbar-brand mb-0 h1">KANBAN2</span>
-      <b-form inline v-if="!loginStatus" @submit.prevent="login">
-        <b-input class="mb-2 mr-sm-2 mb-sm-0" placeholder="Email" type="email" v-model="loginEmail"></b-input>
-        <b-input
-          class="mb-2 mr-sm-2 mb-sm-0"
-          type="password"
-          placeholder="Password"
-          v-model="loginPassword"
-        ></b-input>
-        <b-button class="mb-2 mr-sm-2 mb-sm-0" type="submit" variant="primary">Login</b-button>
-        <div id="google-signin-button" class="g-signin2"></div>
-      </b-form>
-      <!-- <div
-        id="buttonloggedoutgoogle"
-        class="g-signin2"
-        data-onsuccess="onSignIn"
-        @done="onSignIn()"
-      ></div>-->
+    <b-navbar toggleable type="dark" variant="dark">
+      <b-navbar-brand style="font-weight:bold; ">kanban</b-navbar-brand>
 
-      <button v-if="loginStatus" v-on:click="logout" type="button" class="btn btn-primary">Logout</button>
-    </nav>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-form v-if="!loginStatus" @submit.prevent="login">
+          <b-form-input
+            size="sm"
+            class="mr-sm-2"
+            placeholder="Email"
+            v-model="loginEmail"
+            type="email"
+          ></b-form-input>
+          <b-form-input
+            size="sm"
+            class="mr-sm-2"
+            placeholder="Password"
+            v-model="loginPassword"
+            type="password"
+          ></b-form-input>
+          <b-button size="sm" class="my-2 mr-2 my-sm-0" type="submit">Login</b-button>
+          <b-button size="sm" class="my-2 my-sm-0" variant="warning" @click="loginGoogle">Google</b-button>
+        </b-nav-form>
+      </b-navbar-nav>
+
+      <b-button
+        v-if="loginStatus"
+        size="sm"
+        class="my-2 my-sm-0"
+        variant="warning"
+        @click="logout"
+      >Logout</b-button>
+    </b-navbar>
 
     <div id="content" v-if="loginStatus">
       <Card
@@ -38,18 +48,18 @@
       <div id="regdiv" class="center-xy-container center">
         <div id="regbody" class="center">
           <b-form id="regform" @submit.prevent="register">
-            <h2>Welcome</h2>
-            <b-form-group label="Email">
+            <h2 style="color: whitesmoke;font-weight:bold;">Welcome</h2>
+            <b-form-group label="Email" style="color: whitesmoke;">
               <b-input type="email" v-model="regEmail"></b-input>
             </b-form-group>
-            <b-form-group label="Password">
+            <b-form-group label="Password" style="color: whitesmoke;">
               <b-input type="password" v-model="regPassword"></b-input>
             </b-form-group>
-            <b-form-group label="Confirm Password">
+            <b-form-group label="Confirm Password" style="color: whitesmoke;">
               <b-input v-model="regRePassword" type="password"></b-input>
             </b-form-group>
 
-            <b-button type="submit" variant="primary">Register</b-button>
+            <b-button type="submit" variant="warning">Register</b-button>
           </b-form>
         </div>
       </div>
@@ -60,6 +70,7 @@
 <script>
 import axios from "axios";
 import Card from "./components/Card";
+import GglBtn from "./components/Google";
 import Swal from "sweetalert2";
 const url = "http://localhost:3000/";
 
@@ -74,27 +85,33 @@ export default {
       regEmail: null,
       regPassword: null,
       regRePassword: null,
-      tasks: null
+      tasks: null,
+      GSignIn: null
     };
   },
   created() {
-    if (localStorage.access_token) {
-      //this.getTask();
-      this.loginStatus = true;
-    } else {
-      this.loginStatus = null;
-    }
+    this.checkToken();
   },
-  mounted() {
-    gapi.signin2.render("google-signin-button", {
-      onsuccess: this.onSignIn
-    });
-  },
+  //   mounted() {
+  //     gapi.signin2.render("google-signin-button", {
+  //       onsuccess: this.onSignIn
+  //     });
+  //   },
   methods: {
+    checkToken: function() {
+      if (localStorage.access_token) {
+        this.getTask();
+        this.loginStatus = true;
+      } else {
+        this.loginStatus = null;
+      }
+
+      if (localStorage.gsign) {
+        this.GSignIn = true;
+      }
+    },
     register: function() {
-      console.log(this.regEmail, this.regPassword, this.regRePassword);
       if (this.regPassword === this.regRePassword) {
-        console.log("same");
         axios({
           url: `${url}register`,
           method: "POST",
@@ -106,7 +123,7 @@ export default {
             this.regEmail = null;
             this.regPassword = null;
             this.regRePassword = null;
-            this.getTask();
+            this.checkToken();
             Swal.fire({
               position: "top-end",
               icon: "success",
@@ -116,7 +133,6 @@ export default {
             });
           })
           .catch(err => {
-            console.log(err.response.data.msg);
             Swal.fire({
               icon: "error",
               title: "Oops...",
@@ -136,7 +152,6 @@ export default {
       }
     },
     login: function() {
-      console.log(this.loginEmail, this.loginPassword);
       axios({
         url: `${url}login`,
         method: "POST",
@@ -150,7 +165,7 @@ export default {
           this.loginStatus = true;
           this.loginEmail = null;
           this.loginPassword = null;
-          this.getTask();
+          this.checkToken();
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -160,7 +175,6 @@ export default {
           });
         })
         .catch(err => {
-          console.log(err.response.data.msg);
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -170,20 +184,34 @@ export default {
         });
     },
     logout: function() {
-      localStorage.removeItem("access_token");
-      this.loginStatus = null;
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Successfully Logout",
-        showConfirmButton: false,
-        timer: 1500
-      });
-
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function() {
-        console.log("User signed out.");
-      });
+      let self = this;
+      if (this.GSignIn) {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function() {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("gsign");
+          self.loginStatus = null;
+          self.checkToken();
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Successfully Logout",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        });
+      } else {
+        localStorage.removeItem("access_token");
+        this.loginStatus = null;
+        this.checkToken();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Successfully Logout",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     },
     getTask: function() {
       axios({
@@ -192,13 +220,17 @@ export default {
         headers: { access_token: localStorage.access_token }
       })
         .then(res => {
-          console.log(res.data);
           let alltasks = res.data.task;
           let Backlog = [];
           let Todo = [];
           let Done = [];
           let Completed = [];
           for (let i in alltasks) {
+            //change date format
+            let date = new Date(alltasks[i].updatedAt);
+            date = date.toLocaleString("en-GB");
+            alltasks[i].updatedAt = date;
+            //filter by categories
             if (alltasks[i].category == "backlog") {
               Backlog.push(alltasks[i]);
             }
@@ -218,7 +250,6 @@ export default {
             { id: "Done", data: Done },
             { id: "Completed", data: Completed }
           ];
-          console.log("test", this.tasks);
         })
         .catch(err => {
           console.log(err);
@@ -226,7 +257,7 @@ export default {
         });
     },
     taskadded: function() {
-      this.getTask();
+      this.checkToken();
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -236,7 +267,7 @@ export default {
       });
     },
     taskedited: function() {
-      this.getTask();
+      this.checkToken();
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -246,41 +277,58 @@ export default {
       });
     },
     taskdeleted: function() {
-      this.getTask();
+      this.checkToken();
       Swal.fire("Deleted!", "Your file has been deleted.", "success");
     },
-    onSignIn: function(googleUser) {
-      var id_token = googleUser.getAuthResponse().id_token;
-      console.log("user", googleUser);
-      console.log(id_token, "test");
-      axios({
-        method: "post",
-        url: `${url}google-sign-in`,
-        data: {
-          idtoken: id_token
-        }
-      })
-        .then(res => {
-          //console.log("success", res.data, res.access_token);
-          localStorage.setItem("access_token", res.data.access_token);
-          this.loginStatus = true;
-          this.loginEmail = null;
-          this.loginPassword = null;
-          this.getTask();
-          console.log("add");
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Successfully Logged In",
-            showConfirmButton: false,
-            timer: 1500
-          });
+    gsign: function() {
+      this.GSignIn = true;
+      this.loginStatus = true;
+      this.loginEmail = null;
+      this.loginPassword = null;
+      this.checkToken();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Successfully Logged In",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    },
+    loginGoogle() {
+      this.$gAuth
+        .signIn()
+        .then(googleUser => {
+          console.log("user", googleUser);
+          var id_token = googleUser.getAuthResponse().id_token;
+          axios({
+            method: "post",
+            url: `${url}google-sign-in`,
+            data: {
+              idtoken: id_token
+            }
+          })
+            .then(res => {
+              localStorage.setItem("access_token", res.data.access_token);
+              localStorage.setItem("gsign", "google");
+              this.GSignIn = true;
+              this.loginStatus = true;
+              this.checkToken();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Successfully Signed In",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            })
+            .catch(err => {
+              console.log("error", err.response);
+            });
+          //this.isSignIn = this.$gAuth.isAuthorized;
         })
-        .catch(err => {
-          console.log("error", err.response);
+        .catch(error => {
+          console.log(error, "error");
         });
-
-      console.log("success di bawah");
     }
   }
 };
