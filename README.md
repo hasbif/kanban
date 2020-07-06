@@ -6,6 +6,7 @@ kanban is a single page application (SPA) using Vue.js that allows user who regi
 - Edit User Task
 - Delete User Task
 
+client deployment: https://deploy-firebase-bcf07.web.app/
 
 ### Documentation
 Fancy ToDo Documentation : https://documenter.getpostman.com/view/10896189/SzYgRanL?version=latest
