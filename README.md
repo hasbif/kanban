@@ -1,6 +1,6 @@
 # kanban
 
-kanban is a single page application (SPA) that allows user who register and sign in to:
+kanban is a single page application (SPA) using Vue.js that allows user who register and sign in to:
 - Add Task 
 - Show Task for all same organization
 - Edit User Task
